@@ -4,9 +4,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from moa.callbacks import EarlyStopping
-from moa.utils import make_dataloader
-from moa.metrics import SmoothCrossEntropyLoss
+from vaccine.callbacks import EarlyStopping
+from vaccine.utils import make_dataloader
+from vaccine.metrics import SmoothCrossEntropyLoss
 from sklearn.model_selection import train_test_split
 
 
@@ -95,7 +95,7 @@ class Model(object):
         self.net.to(self.device)
        
 
-    def fit(self, X_train, y_train, X_val, y_val, epoch, lr, batch_size, L1=0, L2=0, weight_decay=1e-5, patience=10, smoothing=0.001, p_min=0.001, scheduler='ReduceLROnPlateau', verbose=True):
+    def fit(self, X_train, y_train, X_val, y_val, epoch, lr, batch_size, L1=0, L2=0, weight_decay=1e-5, patience=10, smoothing=0, p_min=0, scheduler='ReduceLROnPlateau', verbose=True):
         if type(X_train)!=np.ndarray :
             X_train, y_train = X_train.values, y_train.values
             X_val, y_val = X_val.values, y_val.values
@@ -152,13 +152,13 @@ class Model(object):
                 break
                 
             if scheduler in ['ReduceLROnPlateau', 'both']:
-                lr_scheduler.step(valid_metric)
+                lr_scheduler_2.step(valid_metric)
                 
         self.net.load_state_dict(torch.load('checkpoint.pt'))
 
     
     def predict(self, X, thresh = 0.5):
-        prob = self.predict_prob(X)
+        prob = self.predict_proba(X)
         res = (prob>=thresh)*1
         return res
     
