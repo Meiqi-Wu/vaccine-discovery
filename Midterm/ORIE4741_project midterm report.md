@@ -35,25 +35,28 @@ There are no missing values in the 11 columns we are using. We checked by `IsNul
 
 Before we use models to predict the positive antibody valence, we first explored each feature and tried to find some implications. We split all features into two parts, one containing peptide features, the other containing parent protein features. We visualized the differences between each feature’s distribution, and compared the mean of each feature from target and non-target groups. We identified distinct differences of both peptide and parent protein features between target and non-target groups. 
 
-For peptide features, we compared peptide length, `chou_fasman` (beta return), `emini` (relative surface accessibility), `kolaskar_tongaonkar` (antigenicity) and `parker` (hydrophobicity).   
+For peptide features, we compared peptide length, `chou_fasman`
+
+ (beta return), `emini` (relative surface accessibility), `kolaskar_tongaonkar` (antigenicity) and `parker` (hydrophobicity).   
     
 Peptide length is calculated by subtracting peptide start position from end position. The length is integer. The distribution of peptide length is highly right skewed, meaning that most peptides have a short length with a mean of 5, while there are several peptides as long as 393. Target and non-target groups have similar distribution of peptide lengths. When we explored the percentage of target records against peptide length, we found that peptides with lengths from 10 to 12 have the highest proportion to display positive antibody valence.    
-    
-
-![](eda1.png)
+    ![](eda_length.png)
 
 For other peptide features, we found `chou_fasman`, `kolaskar_tongaonkar` and `parker` are all normally distributed, while `emini` is right skewed. In terms of differences between target and non-target groups, we found the target group tends to have a higher value for `chou_fasman`, `emini` and `parker`. While for `kolaskar_tongaonkar`, the non-target group has a higher value. All differences are statistically significant under 0.05 significance level.    
      
 
-
 ![](eda2.png)
-![](eda3.png)
 ![](eda4.png)
 ![](eda5.png)
+
+![](eda3.png)
 
 For parent protein features, we compared `isoelectric_point`, `aromaticity`, `hydrophobicity` and `stability`. We found that the target group shows a higher value for `aromaticity`, `hydrophobicity` and `stability`, while the non-target group displays a higher value for `isoelectric_point`. All differences are statistically significant under 0.05 significance level. 
 
 ![](eda6.png)
+
+![](eda1.png)
+
 ![](eda7.png)
 ![](eda8.png)
 
