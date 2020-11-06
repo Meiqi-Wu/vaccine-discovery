@@ -56,6 +56,10 @@ For parent protein features, we compared `isoelectric_point`, `aromaticity`, `hy
 ![](eda7.png)
 ![](eda8.png)
 
+Since linear correlated variables would break the assumptions of some linear models, we checked the correlation of our variables by creating a correlation matrix. The matrix shows that our variables are not linearly correlated. Therefore we could apply linear models to estimate. 
+
+![](corr matrix.png)
+
 ### Preliminary Analyses
 
 For data preprocessing, we split the dataset into two sets, with 20% in the test set and 80% in the training set, and then utilized `StandardScaler` in the `scikit-learn` package to normalize the features to have zero mean and unit variance. It is worth noting that the scalar is trained on the training data instead of the whole dataset to avoid data leakage. 
