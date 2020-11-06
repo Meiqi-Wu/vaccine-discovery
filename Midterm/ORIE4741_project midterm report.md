@@ -67,6 +67,8 @@ In the first logistic regression model, we utilized the “LogisticRegression”
    
 <h4 align="center">Table 1. Plain Logistic Regression Coefficients and Intercept</h4> 
 
+<center>
+
 | Variables | Coefficients |
 | --- | --- |
 | start_position | -1.2642 |
@@ -81,7 +83,7 @@ In the first logistic regression model, we utilized the “LogisticRegression”
 | stability | 0.2238 |
 | intercept | -1.0596 |
 
-
+</center>
 The results indicate that the larger `end position` of the peptide, `chou fasman`, `emini`, `aromaticity` , `hydrophobicity`, and `stability` may contribute to a larger possibility of positive antibody valence, namely target value of 1. While larger value of `start position` of peptide, `kolaskar_tongaonkar`, `parker`, and `isoelectric_point` may contribute to a smaller possibility of positive antibody valence.
 
 To check the predictive power of the model, we calculated MSE for both the training set and test set, which are 0.2638 and 0.2695 respectively. The explained variances of the training set and test set are -0.0295 and -0.0771 respectively (negative explained variance is impossible in linear regression but possible in logistic regression). The negative explained variances indicate that the plain logistic regression model does not fit the data well. Hence, we add regularizer to the logistic regression and see if there is an improvement.
