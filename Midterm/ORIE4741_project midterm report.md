@@ -1,8 +1,8 @@
 # ORIE 4741 Group Project Midterm Report
 ## Covid-19 Vaccine Discovery
-  
+
 **Group Members: Meiqi Wu(mw849), Yuwei Liu (yl3388), Jialiang Sun(js3553), Vaish Gajaraj (vg289)**
-  
+
 
 ### Data Description
 
@@ -24,7 +24,8 @@ The input_bcell.csv and input_sars.csv contain the same columns. The column `tar
 - `aromaticity`: A feature of the parent protein.
 - `hydrophobicity`: A feature of the parent protein.
 - `stability`: A feature of the parent protein. 
-    
+  
+
 The features we dropped are `parent_protein_id`, `protein_seq` and `peptide_seq`. Among them, `protein_seq` and `peptide_seq` are sequences of the parent protein and extracted peptide, respectively. Exploiting these features would possibly involve sequential models, and require much more time and effort. Right now, we would not include them in the features, but in the future, if we get more time, we will consider exploring them using sequential models. 
      
 There are no missing values in the 11 columns we are using. We checked by `IsNull()` in the `pandas` package. We dropped duplicate records and got a final dataset of 14896 records. Our dataset has 761 unique parent proteins and 14841 unique peptides, which means that there are a number of combinations of protein and peptide with different features. We aim to learn from those combinations about what features are most important for us to determine the presence of positive antibody valence. We found there are 4032 target records, against 10864 non-target records. The average rate of positive antibody valence in our dataset is 27.07%.   
@@ -58,7 +59,7 @@ For parent protein features, we compared `isoelectric_point`, `aromaticity`, `hy
 
 Since linear correlated variables would break the assumptions of some linear models, we checked the correlation of our variables by creating a correlation matrix. The matrix shows that our variables are not linearly correlated. Therefore we could apply linear models to estimate. 
 
-![](corr matrix.png)
+![](corrmatrix.png)
 
 ### Preliminary Analyses
 
@@ -67,8 +68,8 @@ For data preprocessing, we split the dataset into two sets, with 20% in the test
 We decided to use some simple supervised learning models to fit our data. Given that our target label, column “target”, only has value zero or one, it is not suitable to use linear regression, which will give prediction values other than zero or one. Then we decided to have a try on logistic regression and random forest.
 
 In the first logistic regression model, we utilized the “LogisticRegression” function from sklearn package with a maximum iteration of 10000 to fit in the training dataset. The result gives us a model with coefficients (shown in table 1).
-   
-   
+
+
 <h4>Table 1. Plain Logistic Regression Coefficients and Intercept</h4> 
 
 | Variables | Coefficients |
