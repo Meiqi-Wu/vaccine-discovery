@@ -6,12 +6,14 @@ import torch.nn.functional as F
 
 
 
+
 class SmoothCrossEntropyLoss(_WeightedLoss):
-    def __init__(self, weight=None, reduction='mean', smoothing=0.0):
+    def __init__(self, weight=None, reduction='mean', smoothing=0.0, pos_weight=1.0):
         super().__init__(weight=weight, reduction=reduction)
         self.smoothing = smoothing
         self.weight = weight
         self.reduction = reduction
+        self.pos_weight = pos_weight
         if torch.cuda.is_available():
             self.device = torch.device('cuda:0')
         else:
@@ -36,7 +38,9 @@ class SmoothCrossEntropyLoss(_WeightedLoss):
 
         if self.weight is not None:
             inputs = inputs * self.weight.unsqueeze(0)
-
-        loss = F.binary_cross_entropy_with_logits(inputs, targets)
+        
+        criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor(self.pos_weight))
+        loss = criterion(inputs, targets)
+#         loss = F.binary_cross_entropy_with_logits(inputs, targets)
 
         return loss

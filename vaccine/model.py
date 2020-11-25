@@ -95,7 +95,7 @@ class Model(object):
         self.net.to(self.device)
        
 
-    def fit(self, X_train, y_train, X_val, y_val, epoch, lr, batch_size, L1=0, L2=0, weight_decay=1e-5, patience=10, smoothing=0, p_min=0, scheduler='ReduceLROnPlateau', verbose=True):
+    def fit(self, X_train, y_train, X_val, y_val, epoch, lr, batch_size, L1=0, L2=0, weight_decay=1e-5, patience=10, smoothing=0, pos_weight=1.0, scheduler='ReduceLROnPlateau', verbose=True):
         if type(X_train)!=np.ndarray :
             X_train, y_train = X_train.values, y_train.values
             X_val, y_val = X_val.values, y_val.values
@@ -112,8 +112,8 @@ class Model(object):
             lr_scheduler_2 = optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=max(patience-7, 2), 
                                                                 factor=0.5, verbose=verbose)
 #         criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor(1.))
-        criterion = SmoothCrossEntropyLoss(smoothing=smoothing)
-        metric = lambda inputs, targets: F.binary_cross_entropy((torch.clamp(F.sigmoid(inputs), p_min, 1-p_min)), targets)
+        criterion = SmoothCrossEntropyLoss(smoothing=smoothing, pos_weight=pos_weight)
+#         metric = lambda inputs, targets: F.binary_cross_entropy((torch.clamp(F.sigmoid(inputs), p_min, 1-p_min)), targets)
         
         early_stopping = EarlyStopping(patience=patience, verbose=False)
         
@@ -130,7 +130,7 @@ class Model(object):
                 
                 y_prob = self.net(X_batch)
                 train_loss = criterion(y_prob, y_target) + self.net.regular_loss(L1, L2)
-                train_metric = metric(y_prob, y_target)
+                train_metric = criterion(y_prob, y_target) # metric(y_prob, y_target)
                 train_loss.backward()
                 optimizer.step()
                 if scheduler in ['OneCycleLR', 'both']:
@@ -140,7 +140,7 @@ class Model(object):
             self.net.eval()
             y_prob = self.net(X_val)
             valid_loss = criterion(y_prob, y_val) + self.net.regular_loss(L1, L2)
-            valid_metric = metric(y_prob, y_val)
+            valid_metric = criterion(y_prob, y_val) # metric(y_prob, y_val)
             
             if verbose:
                 if (e+1) % 2 ==0:
